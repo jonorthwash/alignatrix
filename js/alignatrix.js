@@ -11,32 +11,36 @@ $(document).on("input", "textarea",
 );
 $(document).on("input", "#currentSent",
 	function(event) {
-		var newVal = Number($("#currentSent").val());
-		if (newVal<0)
-			newVal = 0;
-		if (newVal>maxNumLines()-1)
-			newVal = maxNumLines()-1;
-		//console.log(newVal);
-		$("#currentSent").val(newVal);
+		checkCurrentVal();
 		updateCurrentSentence();
 	}
 );
 $(document).on("click", "#prevSent",
 	function(event) {
-		//updateCurrentSentence();
 		var prevVal = Number($("#currentSent").val());
 		$("#currentSent").val(prevVal-1);
+		checkCurrentVal();
 		updateCurrentSentence();
 	}
 );
 $(document).on("click", "#nextSent",
 	function(event) {
-		//updateCurrentSentence();
 		var prevVal = Number($("#currentSent").val());
 		$("#currentSent").val(prevVal+1);
+		checkCurrentVal();
 		updateCurrentSentence();
 	}
 );
+
+function checkCurrentVal() {
+	var newVal = Number($("#currentSent").val());
+	if (newVal<0)
+		newVal = 0;
+	if (newVal>maxNumLines()-1)
+		newVal = maxNumLines()-1;
+	//console.log(newVal);
+	$("#currentSent").val(newVal);
+}
 
 function maxNumLines() {
 	return Math.min($("#slSents").data("lines"), $("#tlSents").data("lines"), $("#alignmentData").data("lines"));
@@ -58,12 +62,21 @@ function updateCurrentSentence() {
 
 	$("#sl-row").empty();
 	slThisSent.forEach(function(item, index) {
+		item = makeTags(item);
 		$("<div>"+item+"</div>").addClass("token").appendTo("#sl-row");
 	});
 
 	$("#tl-row").empty();
 	tlThisSent.forEach(function(item, index) {
+		item = makeTags(item);
 		$("<div>"+item+"</div>").addClass("token").appendTo("#tl-row");
 	});
 
+}
+
+function makeTags(item) {
+	item = item.replace(/</g, "☭");
+	item = item.replace(/>/g, "</tag>");
+	item = item.replace(/☭/g, "<tag>");
+	return item;
 }
