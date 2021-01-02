@@ -36,6 +36,27 @@ $(document).on("click", "#nextSent",
 	}
 );
 
+$(document).on("click", "#tl-row div, #sl-row div",
+	function(event) {
+		var selected = $(this).parent().data("selected");
+		var curIdx = $(this).index();
+		//console.log(selected);
+		if ((typeof selected == 'undefined') || selected == false || selected == curIdx) {
+			if ($(this).data("selected")) {
+				$(this).data("selected", false);
+				$(this).parent().data("selected", false);
+				$(this).css("background-color", "");
+			} else {
+				//console.log(curIdx);
+				$(this).data("selected", true);
+				$(this).parent().data("selected", curIdx);
+				$(this).css("background-color", "pink");
+			}
+		}
+		//console.log("end", $(this).parent().data("selected"));
+	}
+);
+
 function checkCurrentVal() {
 	var newVal = Number($("#currentSent").val());
 	if (newVal<0)
