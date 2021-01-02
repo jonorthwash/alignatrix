@@ -14,9 +14,9 @@ $(document).on("input", "#currentSent",
 		var newVal = Number($("#currentSent").val());
 		if (newVal<0)
 			newVal = 0;
-		if (newVal>maxNumLines())
-			newVal = maxNumLines();
-		console.log(newVal);
+		if (newVal>maxNumLines()-1)
+			newVal = maxNumLines()-1;
+		//console.log(newVal);
 		$("#currentSent").val(newVal);
 		updateCurrentSentence();
 	}
@@ -39,7 +39,7 @@ $(document).on("click", "#nextSent",
 );
 
 function maxNumLines() {
-	return Math.max($("#slSents").data("lines"), $("#tlSents").data("lines"), $("#alignmentData").data("lines"));
+	return Math.min($("#slSents").data("lines"), $("#tlSents").data("lines"), $("#alignmentData").data("lines"));
 }
 
 function updateCurrentSentence() {
