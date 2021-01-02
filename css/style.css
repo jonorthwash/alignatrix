@@ -1,0 +1,47 @@
+
+#text-sl {
+	border: 1px solid black;
+	width: 31%;
+	float: left;
+	margin: 1px;
+}
+
+#text-tl {
+	border: 1px solid black;
+	width: 31%;
+	float: left;
+	margin: 1px;
+}
+
+#text-align {
+	border: 1px solid black;
+	width: 31%;
+	float: left;
+	margin: 1px;
+}
+
+textarea {
+	width: 90%;
+}
+
+#controls {
+	width: 100%;
+	clear: both;
+}
+
+#current-sentence {
+	width: 100%;
+	clear: both;
+}
+
+#sl-row, #tl-row, #align-row {
+	width: 100%;
+	clear: both;
+	height: 2em;
+	text-align: center;
+}
+
+.token {
+	display: inline-block;
+	padding-right: 0.5em;
+}

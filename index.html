@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="./css/style.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="./js/alignatrix.js"></script>	
+
+	<title>MT Alignatrix</title>
+</head>
+
+<body>
+
+	<div id="current-sentence">
+		<div id="sl-row"></div>
+		<div id="align-row"></div>
+		<div id="tl-row"></div>
+	</div>
+
+	<div id="controls">
+		<button id="prevSent" type="button">←</button>
+		<input id="currentSent" type="number" value="0"/>
+		<button id="nextSent" type="button">→</button>
+	</div>
+
+	<div id="text-sl">
+		<h3>SL sentences</h3>
+		<textarea id="slSents"></textarea>
+	</div>
+	<div id="text-tl">
+		<h3>TL sentences</h3>
+		<textarea id="tlSents"></textarea>
+	</div>
+	<div id="text-align">
+		<h3>Alignment data</h3>
+		<textarea id="alignmentData"></textarea>
+	</div>
+</body>
+
+</html>
