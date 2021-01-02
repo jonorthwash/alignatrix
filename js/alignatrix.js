@@ -45,12 +45,12 @@ $(document).on("click", "#tl-row div, #sl-row div",
 			if ($(this).data("selected")) {
 				$(this).data("selected", false);
 				$(this).parent().data("selected", false);
-				$(this).css("background-color", "");
+				$(this).removeClass("highlighted");
 			} else {
 				//console.log(curIdx);
 				$(this).data("selected", true);
 				$(this).parent().data("selected", curIdx);
-				$(this).css("background-color", "pink");
+				$(this).addClass("highlighted");
 			}
 		}
 		//console.log("end", $(this).parent().data("selected"));

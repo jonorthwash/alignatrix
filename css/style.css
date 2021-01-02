@@ -35,7 +35,7 @@ textarea {
 
 .token {
 	display: inline-block;
-	padding-right: 0.5em;
+	margin-right: 0.5em;
 }
 
 tag {
@@ -53,4 +53,8 @@ tag::after {
 	-webkit-filter: brightness(85%); /* Safari 6.0 - 9.0 */
 	filter: brightness(85%);
 	color: silver !important ;
+}
+
+.highlighted {
+	background-color: pink ;
 }
