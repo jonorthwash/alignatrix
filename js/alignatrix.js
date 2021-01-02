@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 $(window).on('resize', function(){
 	updateCurrentSentence();
-}
+});
 
 // update current sentence on textarea changes
 $(document).on("input", "textarea",
