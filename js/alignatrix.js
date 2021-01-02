@@ -54,8 +54,31 @@ $(document).on("click", "#tl-row div, #sl-row div",
 			}
 		}
 		//console.log("end", $(this).parent().data("selected"));
+		updateConnections();
 	}
 );
+
+function updateConnections() {
+	var slSelected = $("#sl-row").data("selected");
+	var tlSelected = $("#tl-row").data("selected");
+	if (slSelected && tlSelected) {
+		//console.log(slSelected, tlSelected);
+		alignmentPairs = $("#alignmentData").data("pairs");
+		alignmentPair = slSelected+"-"+tlSelected;
+		//console.log(alignmentPairs, alignmentPair, $.inArray(alignmentPair, alignmentPairs));
+		// this is already linked, don't link again
+		if ($.inArray(alignmentPair, alignmentPairs)<0) {
+			// new pair
+			addToPairs($("#currentSent").val(), alignmentPair);
+		}
+	}
+}
+
+function addToPairs(lineNum, alignmentPair) {
+	//FIXME: add new pair to data 
+	
+	updateCurrentSentence();
+}
 
 function checkCurrentVal() {
 	var newVal = Number($("#currentSent").val());
@@ -80,6 +103,8 @@ function updateCurrentSentence() {
 	var slThisSent = apStreamTokenise(slSents[curSent]);
 	var tlThisSent = apStreamTokenise(tlSents[curSent]);
 	var alignmentThisSent = alignmentData[curSent].split(' ');
+
+	$("#alignmentData").data("pairs", alignmentThisSent);
 
 	$("#slSents").data("lines", slSents.length);
 	$("#tlSents").data("lines", tlSents.length);
