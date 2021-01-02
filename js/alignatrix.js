@@ -11,6 +11,13 @@ $(document).on("input", "textarea",
 );
 $(document).on("input", "#currentSent",
 	function(event) {
+		var newVal = Number($("#currentSent").val());
+		if (newVal<0)
+			newVal = 0;
+		if (newVal>maxNumLines())
+			newVal = maxNumLines();
+		console.log(newVal);
+		$("#currentSent").val(newVal);
 		updateCurrentSentence();
 	}
 );
@@ -26,10 +33,8 @@ $(document).on("click", "#nextSent",
 	function(event) {
 		//updateCurrentSentence();
 		var prevVal = Number($("#currentSent").val());
-		if (prevVal+1>maxNumLines()) {
-			$("#currentSent").val(prevVal+1);
-			updateCurrentSentence();
-		}
+		$("#currentSent").val(prevVal+1);
+		updateCurrentSentence();
 	}
 );
 
