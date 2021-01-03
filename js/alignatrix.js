@@ -40,12 +40,15 @@ $(document).on("click", "#tl-row div, #sl-row div",
 	function(event) {
 		var selected = $(this).parent().data("selected");
 		var curIdx = $(this).index();
-		//console.log(selected);
-		if ((typeof selected == 'undefined') || selected == false || selected == curIdx) {
+		console.log(selected);
+		// tests for whether a box can be clicked
+		if ((typeof selected == 'undefined') || selected < 0 || selected == curIdx) {
+			// if it's already selected, unselect it
 			if ($(this).data("selected")) {
 				$(this).data("selected", false);
-				$(this).parent().data("selected", false);
+				$(this).parent().data("selected", -1);
 				$(this).removeClass("highlighted");
+			// if it's not selected, select it
 			} else {
 				//console.log(curIdx);
 				$(this).data("selected", true);
@@ -61,8 +64,8 @@ $(document).on("click", "#tl-row div, #sl-row div",
 function updateConnections() {
 	var slSelected = $("#sl-row").data("selected");
 	var tlSelected = $("#tl-row").data("selected");
-	if (slSelected && tlSelected) {
-		//console.log(slSelected, tlSelected);
+	if (slSelected >= 0 && tlSelected >= 0) {
+		console.log(slSelected, tlSelected);
 		alignmentPairs = $("#alignmentData").data("pairs");
 		alignmentPair = slSelected+"-"+tlSelected;
 		//console.log(alignmentPairs, alignmentPair, $.inArray(alignmentPair, alignmentPairs));
@@ -70,8 +73,8 @@ function updateConnections() {
 		if ($.inArray(alignmentPair, alignmentPairs)<0) {
 			// new pair
 			addToPairs($("#currentSent").val(), alignmentPair);
-			$("#sl-row").data("selected", false);
-			$("#tl-row").data("selected", false);
+			$("#sl-row").data("selected", -1);
+			$("#tl-row").data("selected", -1);
 			updateCurrentSentence();
 		}
 	}
