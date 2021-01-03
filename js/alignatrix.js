@@ -338,7 +338,9 @@ var apStreamTokenise = function(s) {
 	var ls = [];
 	var last = 0;
 	for (var i = 0; i < s.length; i++) {
-		if (s[i] == "^") {
+		if (s[i] == "\\") {
+			i++;
+		} else if (s[i] == "^") {
 			last = i;
 		} else if (s[i] == "$") {
 			ls.push(s.slice(last, i+1))
@@ -348,10 +350,7 @@ var apStreamTokenise = function(s) {
 };
 
 function makeTags(item) {
-	item = item.replace(/</g, "☭");
-	item = item.replace(/>/g, "</tag>");
-	item = item.replace(/☭/g, "<tag>");
-	return item;
+	return item.replace(/<([^<>]*)>/g, "<tag>$1</tag>");
 }
 
 
