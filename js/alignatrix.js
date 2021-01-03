@@ -129,16 +129,57 @@ function getConnectionsTl(idx) {
 	return matched;
 }
 
+function highlightLine(pair) {
+	$(".line").each(function() {
+		if ($(this).data("pair") == pair) {
+			$(this).addClass("highlightedline");
+		}
+	});
+}
+
+function unhighlightLine(pair) {
+	$(".line").each(function() {
+		if ($(this).data("pair") == pair) {
+			$(this).removeClass("highlightedline");
+		}
+	});
+}
+
 function hoverHighlight(node) {
 	var curIdx = node.index();
 	var tlORsl = (node.parent().attr("id").includes("tl") ? "tl" : "sl");
 	showConnectedNodes(curIdx, tlORsl, true);
+	// to highlight the lines
+	if (tlORsl=='sl') {
+		getConnectionsSl(curIdx).forEach(function(tlIdx, index){
+			var pair = curIdx+"-"+tlIdx;
+			highlightLine(pair);
+		});
+	} else {
+		getConnectionsTl(curIdx).forEach(function(slIdx, index){
+			var pair = slIdx+"-"+curIdx;
+			highlightLine(pair);
+		});
+	}
 }
 
 function hoverUnhighlight(node) {
 	var curIdx = node.index();
 	var tlORsl = (node.parent().attr("id").includes("tl") ? "tl" : "sl");
 	showConnectedNodes(curIdx, tlORsl, false);
+	// to unhighlight the lines
+	if (tlORsl=='sl') {
+		getConnectionsSl(curIdx).forEach(function(tlIdx, index){
+			var pair = curIdx+"-"+tlIdx;
+			unhighlightLine(pair);
+		});
+	} else {
+		getConnectionsTl(curIdx).forEach(function(slIdx, index){
+			var pair = slIdx+"-"+curIdx;
+			unhighlightLine(pair);
+		});
+	}
+
 }
 
 function updateConnections() {
