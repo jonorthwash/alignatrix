@@ -83,6 +83,17 @@ $(document).on("click", "#tl-row div, #sl-row div",
 			}
 		}
 		//console.log("end", $(this).parent().data("selected"));
+		// if sl and tl nodes both selected, highlight line in between
+		if ($("#tl-row").data("selected") > -1 && $("#sl-row").data("selected") > -1) {
+			//console.log("HARGLE");
+			var pair = $("#sl-row").data("selected") + "-" + $("#tl-row").data("selected");
+			$("#align-row").data("lockedpair", pair);
+			highlightLine(pair, true);
+		} else { // otherwise unhighlight lines
+			console.log($("#align-row").data("lockedpair"));
+			unhighlightLine($("#align-row").data("lockedpair"), true);
+			$("#align-row").data("lockedpair", "");
+		}
 		updateConnections();
 	}
 );
@@ -129,18 +140,29 @@ function getConnectionsTl(idx) {
 	return matched;
 }
 
-function highlightLine(pair) {
+function highlightLine(pair, lock=false) {
+	//console.log(pair, lock);
 	$(".line").each(function() {
 		if ($(this).data("pair") == pair) {
 			$(this).addClass("highlightedline");
+			if (lock) {
+				$(this).data("locked", true);
+			}
 		}
+		console.log(pair, lock, $(this).data("locked"));
 	});
 }
 
-function unhighlightLine(pair) {
+function unhighlightLine(pair, unlock=false) {
 	$(".line").each(function() {
 		if ($(this).data("pair") == pair) {
-			$(this).removeClass("highlightedline");
+			//console.log($(this).data("pair"), $(this).data("locked"));
+			if(!$(this).data("locked")) { // if it's not locked
+				$(this).removeClass("highlightedline");
+			} else if(unlock) { // if it's locked and unlock is specified
+				$(this).removeClass("highlightedline");
+				$(this).data("locked", false);
+			}
 		}
 	});
 }
