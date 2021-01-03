@@ -8,7 +8,12 @@ $(window).on('resize', function(){
 
 $('html').keyup(function(e){
 	if(e.keyCode == 46) {
-		$(".highlightedline").remove();
+		//$(".highlightedline").remove();
+		$(".highlightedline").each(function() {
+			//console.log($(this), $(this).data("pair"));
+			removeFromPairs($("#currentSent").val(), $(this).data("pair"));
+		});
+		updateCurrentSentence();
 	}
 });
 
@@ -16,7 +21,7 @@ $(document).on("click", ".line",
 	function(event) {
 		var classList = $(this).attr("class").split(/\s+/);
 		if ($.inArray("highlightedline", classList) !== -1) {
-			console.log("highlightedline");
+			//console.log("highlightedline");
 			$(this).removeClass("highlightedline");
 		} else {
 			$(this).addClass("highlightedline");
@@ -58,7 +63,7 @@ $(document).on("click", "#tl-row div, #sl-row div",
 	function(event) {
 		var selected = $(this).parent().data("selected");
 		var curIdx = $(this).index();
-		console.log(selected);
+		//console.log(selected);
 		// tests for whether a box can be clicked
 		if ((typeof selected == 'undefined') || selected < 0 || selected == curIdx) {
 			// if it's already selected, unselect it
@@ -83,7 +88,7 @@ function updateConnections() {
 	var slSelected = $("#sl-row").data("selected");
 	var tlSelected = $("#tl-row").data("selected");
 	if (slSelected >= 0 && tlSelected >= 0) {
-		console.log(slSelected, tlSelected);
+		//console.log(slSelected, tlSelected);
 		alignmentPairs = $("#alignmentData").data("pairs");
 		alignmentPair = slSelected+"-"+tlSelected;
 		//console.log(alignmentPairs, alignmentPair, $.inArray(alignmentPair, alignmentPairs));
@@ -96,6 +101,30 @@ function updateConnections() {
 			updateCurrentSentence();
 		}
 	}
+}
+
+function removeFromPairs(lineNum, alignmentPair) {
+	var allLines = "";
+	var lines = $("#alignmentData").val().split('\n')
+	var thisLinePairs = lines[lineNum].split(' ');
+	//console.log(thisLinePairs);
+	//from https://stackoverflow.com/a/59250151/5181692
+	//thisLinePairs.splice($.inArray(alignmentPair, thisLinePairs), $.inArray(alignmentPair, thisLinePairs));
+	thisLinePairs = thisLinePairs.filter(function(elem){return elem != alignmentPair});
+	//console.log(thisLinePairs, alignmentPair);
+	//console.log(thisLinePairs);
+	var newLine = thisLinePairs.join(" ");
+	lines.forEach(function(line, index) {
+		if (lineNum == index) {
+			//console.log(line, '\n', newLine);
+			allLines += newLine;
+		} else {
+			allLines += line;
+		}
+		if (index<lines.length-1)
+			allLines += '\n';
+	});
+	$("#alignmentData").val(allLines);
 }
 
 function addToPairs(lineNum, alignmentPair) {
@@ -161,14 +190,15 @@ function updateCurrentSentence() {
 		$("<div>"+item+"</div>").addClass("token").appendTo("#tl-row");
 	});
 	$("#align-row").empty();
-	alignmentThisSent.forEach(function(item, index) {
-		var slIdx = item.replace(/-.*/g, "");
-		var tlIdx = item.replace(/.*-/g, "");
+	alignmentThisSent.forEach(function(pair, index) {
+		var slIdx = pair.replace(/-.*/g, "");
+		var tlIdx = pair.replace(/.*-/g, "");
 		var slEl = $("#sl-row").children().eq(slIdx);
 		var tlEl = $("#tl-row").children().eq(tlIdx);
 		//connect(document.getElementById("sl-row"), document.getElementById("tl-row"), "#00AAAA", 2);
-		htmlLine = makeConnectLine(slEl, tlEl, "#00AAAA", 2);
-		$("#align-row").append(htmlLine);
+		var lineObject = makeConnectLine(slEl, tlEl, "#00AAAA", 2).data("pair", pair);
+		//console.log(lineObject, pair, lineObject.data("pair"));
+		$("#align-row").append(lineObject);
 	});
 
 }
@@ -225,11 +255,11 @@ function makeConnectLine(div1, div2, color, thickness) { // draw a line connecti
 		// angle
 		var angle = Math.atan2((y1-y2),(x1-x2))*(180/Math.PI);
 		// make hr
-		var htmlLine = "<div class='line' style='padding:0px; margin:0px; height:" + thickness + "px; background-color:" + color + "; line-height:1px; position:absolute; left:" + cx + "px; top:" + cy + "px; width:" + length + "px; -moz-transform:rotate(" + angle + "deg); -webkit-transform:rotate(" + angle + "deg); -o-transform:rotate(" + angle + "deg); -ms-transform:rotate(" + angle + "deg); transform:rotate(" + angle + "deg);' />";
+		var htmlLine = "<div style='padding:0px; margin:0px; height:" + thickness + "px; background-color:" + color + "; line-height:1px; position:absolute; left:" + cx + "px; top:" + cy + "px; width:" + length + "px; -moz-transform:rotate(" + angle + "deg); -webkit-transform:rotate(" + angle + "deg); -o-transform:rotate(" + angle + "deg); -ms-transform:rotate(" + angle + "deg); transform:rotate(" + angle + "deg);' />";
 		//
 		// alert(htmlLine);
 		//document.body.innerHTML += htmlLine;
-		return htmlLine;
+		return $(htmlLine).addClass('line');
 	} else {
 		return "";
 	}
