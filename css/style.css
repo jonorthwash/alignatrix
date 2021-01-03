@@ -58,9 +58,18 @@ tag::after {
 }
 
 .highlighted {
-	background-color: pink ;
+	background-color: pink !important ;
 }
 
 .highlightedline {
 	border: 1px solid pink ;
 }
+
+.halfhighlighted {
+	background-color: #ffe5e9 ;
+}
+
+.token:hover {
+	background-color: #ffe5e9 ;
+}
+

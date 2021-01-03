@@ -63,6 +63,7 @@ $(document).on("click", "#tl-row div, #sl-row div",
 	function(event) {
 		var selected = $(this).parent().data("selected");
 		var curIdx = $(this).index();
+		var tlORsl = ($(this).parent().attr("id").includes("tl") ? "tl" : "sl");
 		//console.log(selected);
 		// tests for whether a box can be clicked
 		if ((typeof selected == 'undefined') || selected < 0 || selected == curIdx) {
@@ -71,18 +72,74 @@ $(document).on("click", "#tl-row div, #sl-row div",
 				$(this).data("selected", false);
 				$(this).parent().data("selected", -1);
 				$(this).removeClass("highlighted");
+				showConnectedNodes(curIdx, tlORsl, false);
 			// if it's not selected, select it
 			} else {
 				//console.log(curIdx);
 				$(this).data("selected", true);
 				$(this).parent().data("selected", curIdx);
 				$(this).addClass("highlighted");
+				showConnectedNodes(curIdx, tlORsl, true);
 			}
 		}
 		//console.log("end", $(this).parent().data("selected"));
 		updateConnections();
 	}
 );
+
+function showConnectedNodes(idx, tlORsl, highlightORunhighlight) {
+	//console.log(idx, tlORsl, highlightORunhighlight);
+	if (tlORsl=='sl') {
+		getConnectionsSl(idx).forEach(function(tlIdx, index){
+			if (highlightORunhighlight)
+				$($("#tl-row").children()[tlIdx]).addClass("halfhighlighted");
+			else
+				$($("#tl-row").children()[tlIdx]).removeClass("halfhighlighted");
+		});
+	} else {
+		getConnectionsTl(idx).forEach(function(slIdx, index){
+			if (highlightORunhighlight)
+				$($("#sl-row").children()[slIdx]).addClass("halfhighlighted");
+			else
+				$($("#sl-row").children()[slIdx]).removeClass("halfhighlighted");
+		});
+	}
+	//console.log(connections);
+}
+
+function getConnectionsSl(idx) {
+	var matched = Array();
+	$("#alignmentData").data("pairs").forEach(function(pair, index) {
+		var slIdx = pair.replace(/-.*/g, "");
+		var tlIdx = pair.replace(/.*-/g, "");
+		if (slIdx==idx)
+			matched.push(tlIdx);
+	});
+	return matched;
+}
+
+function getConnectionsTl(idx) {
+	var matched = Array();
+	$("#alignmentData").data("pairs").forEach(function(pair, index) {
+		var slIdx = pair.replace(/-.*/g, "");
+		var tlIdx = pair.replace(/.*-/g, "");
+		if (tlIdx==idx)
+			matched.push(slIdx);
+	});
+	return matched;
+}
+
+function hoverHighlight(node) {
+	var curIdx = node.index();
+	var tlORsl = (node.parent().attr("id").includes("tl") ? "tl" : "sl");
+	showConnectedNodes(curIdx, tlORsl, true);
+}
+
+function hoverUnhighlight(node) {
+	var curIdx = node.index();
+	var tlORsl = (node.parent().attr("id").includes("tl") ? "tl" : "sl");
+	showConnectedNodes(curIdx, tlORsl, false);
+}
 
 function updateConnections() {
 	var slSelected = $("#sl-row").data("selected");
@@ -181,13 +238,13 @@ function updateCurrentSentence() {
 	$("#sl-row").empty();
 	slThisSent.forEach(function(item, index) {
 		var item = makeTags(item);
-		$("<div>"+item+"</div>").addClass("token").appendTo("#sl-row");
+		$("<div>"+item+"</div>").addClass("token").hover(function(){hoverHighlight($(this))},function(){hoverUnhighlight($(this))}).appendTo("#sl-row");
 	});
 
 	$("#tl-row").empty();
 	tlThisSent.forEach(function(item, index) {
 		var item = makeTags(item);
-		$("<div>"+item+"</div>").addClass("token").appendTo("#tl-row");
+		$("<div>"+item+"</div>").addClass("token").hover(function(){hoverHighlight($(this))},function(){hoverUnhighlight($(this))}).appendTo("#tl-row");
 	});
 	$("#align-row").empty();
 	alignmentThisSent.forEach(function(pair, index) {
