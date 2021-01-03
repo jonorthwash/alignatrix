@@ -12,6 +12,7 @@ $('html').keyup(function(e){
 		$(".highlightedline").each(function() {
 			//console.log($(this), $(this).data("pair"));
 			removeFromPairs($("#currentSent").val(), $(this).data("pair"));
+			$("#align-row").data("lockedpair", "");
 		});
 		updateCurrentSentence();
 	}
@@ -90,8 +91,9 @@ $(document).on("click", "#tl-row div, #sl-row div",
 			$("#align-row").data("lockedpair", pair);
 			highlightLine(pair, true);
 		} else { // otherwise unhighlight lines
-			console.log($("#align-row").data("lockedpair"));
-			unhighlightLine($("#align-row").data("lockedpair"), true);
+			//console.log($("#align-row").data("lockedpair"));
+			//unhighlightLine($("#align-row").data("lockedpair"), true);
+			unlockLine($("#align-row").data("lockedpair"));
 			$("#align-row").data("lockedpair", "");
 		}
 		updateConnections();
@@ -163,6 +165,14 @@ function unhighlightLine(pair, unlock=false) {
 				$(this).removeClass("highlightedline");
 				$(this).data("locked", false);
 			}
+		}
+	});
+}
+
+function unlockLine(pair) {
+	$(".line").each(function() {
+		if ($(this).data("pair") == pair && $(this).data("locked")) { 
+			$(this).data("locked", false);
 		}
 	});
 }
