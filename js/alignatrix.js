@@ -92,7 +92,8 @@ function addToPairs(lineNum, alignmentPair) {
 		} else {
 			allLines += line;
 		}
-		allLines += '\n'
+		if (index<lines.length-1)
+			allLines += '\n';
 	});
 	$("#alignmentData").val(allLines);
 }
