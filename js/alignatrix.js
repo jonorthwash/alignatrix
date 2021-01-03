@@ -70,14 +70,31 @@ function updateConnections() {
 		if ($.inArray(alignmentPair, alignmentPairs)<0) {
 			// new pair
 			addToPairs($("#currentSent").val(), alignmentPair);
+			$("#sl-row").data("selected", false);
+			$("#tl-row").data("selected", false);
+			updateCurrentSentence();
 		}
 	}
 }
 
 function addToPairs(lineNum, alignmentPair) {
-	//FIXME: add new pair to data 
-	
-	updateCurrentSentence();
+	var allLines = "";
+	var lines = $("#alignmentData").val().split('\n')
+	var thisLinePairs = lines[lineNum].split(' ');
+	//console.log(thisLinePairs);
+	thisLinePairs.push(alignmentPair);
+	//console.log(thisLinePairs);
+	var newLine = thisLinePairs.join(" ");
+	lines.forEach(function(line, index) {
+		if (lineNum == index) {
+			//console.log(line, '\n', newLine);
+			allLines += newLine;
+		} else {
+			allLines += line;
+		}
+		allLines += '\n'
+	});
+	$("#alignmentData").val(allLines);
 }
 
 function checkCurrentVal() {

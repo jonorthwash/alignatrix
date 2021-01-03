@@ -36,6 +36,8 @@ textarea {
 .token {
 	display: inline-block;
 	margin-right: 0.5em;
+	border: 1px solid green;
+	margin-bottom: 0.5em;
 }
 
 tag {
