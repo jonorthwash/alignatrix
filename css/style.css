@@ -60,3 +60,7 @@ tag::after {
 .highlighted {
 	background-color: pink ;
 }
+
+.highlightedline {
+	border: 1px solid pink ;
+}

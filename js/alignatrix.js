@@ -6,6 +6,24 @@ $(window).on('resize', function(){
 	updateCurrentSentence();
 });
 
+$('html').keyup(function(e){
+	if(e.keyCode == 46) {
+		$(".highlightedline").remove();
+	}
+});
+
+$(document).on("click", ".line",
+	function(event) {
+		var classList = $(this).attr("class").split(/\s+/);
+		if ($.inArray("highlightedline", classList) !== -1) {
+			console.log("highlightedline");
+			$(this).removeClass("highlightedline");
+		} else {
+			$(this).addClass("highlightedline");
+		}
+	}
+);
+
 // update current sentence on textarea changes
 $(document).on("input", "textarea",
 	function(event) {
@@ -207,7 +225,7 @@ function makeConnectLine(div1, div2, color, thickness) { // draw a line connecti
 		// angle
 		var angle = Math.atan2((y1-y2),(x1-x2))*(180/Math.PI);
 		// make hr
-		var htmlLine = "<div style='padding:0px; margin:0px; height:" + thickness + "px; background-color:" + color + "; line-height:1px; position:absolute; left:" + cx + "px; top:" + cy + "px; width:" + length + "px; -moz-transform:rotate(" + angle + "deg); -webkit-transform:rotate(" + angle + "deg); -o-transform:rotate(" + angle + "deg); -ms-transform:rotate(" + angle + "deg); transform:rotate(" + angle + "deg);' />";
+		var htmlLine = "<div class='line' style='padding:0px; margin:0px; height:" + thickness + "px; background-color:" + color + "; line-height:1px; position:absolute; left:" + cx + "px; top:" + cy + "px; width:" + length + "px; -moz-transform:rotate(" + angle + "deg); -webkit-transform:rotate(" + angle + "deg); -o-transform:rotate(" + angle + "deg); -ms-transform:rotate(" + angle + "deg); transform:rotate(" + angle + "deg);' />";
 		//
 		// alert(htmlLine);
 		//document.body.innerHTML += htmlLine;
