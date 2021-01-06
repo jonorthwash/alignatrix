@@ -326,7 +326,7 @@ function updateCurrentSentence() {
 		var slEl = $("#sl-row").children().eq(slIdx);
 		var tlEl = $("#tl-row").children().eq(tlIdx);
 		//connect(document.getElementById("sl-row"), document.getElementById("tl-row"), "#00AAAA", 2);
-		var lineObject = makeConnectLine(slEl, tlEl, "#00AAAA", 2).data("pair", pair);
+		var lineObject = makeConnectLine(slEl, tlEl, "rgba(0, 170, 170, 0.7)", 2).data("pair", pair);
 		//console.log(lineObject, pair, lineObject.data("pair"));
 		$("#align-row").append(lineObject);
 	});
